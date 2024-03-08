@@ -203,6 +203,7 @@
 					nombre: '',
 					proveedor_id: ''
 				}
+				this.items = []
 				this.modal.hide();
 			},
 			cerrarModalShow(){

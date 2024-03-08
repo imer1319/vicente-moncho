@@ -15,7 +15,7 @@ class ProveedorController extends Controller
 
     public function apiproveedores()
     {
-        return Proveedor::all()->map(function ($proveedor) {
+        return Proveedor::orderBy('created_at','DESC')->get()->map(function ($proveedor) {
             return [
                 'id' => $proveedor->id,
                 'nombre' => $proveedor->nombre,
