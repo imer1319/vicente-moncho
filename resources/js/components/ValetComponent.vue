@@ -9,10 +9,14 @@
 					</button>
 				</div>
 				<div class="card-body">
-					<div class="form-group mb-3 input-group">
-						<input type="text" v-model="search" class="form-control" placeholder="Buscar por proveedor">
-						<button class="btn btn-primary"><span class="pi pi-search"></span></button>
-					</div>
+					<v-select 
+					label="fullName"
+					v-model="proveedorId" 
+					:options="proveedores"
+					:reduce="(fullName) => fullName.id"
+					placeholder="Seleccione un proveedor"
+					></v-select>
+					<hr>
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -28,9 +32,9 @@
 								<td> {{ valet.proveedor }} </td>
 								<td> {{ valet.nombre }} </td>
 								<td width="20px">
-									<div class="btn-group">
-										<a class="btn btn-info text-white" @click.prevent="verValet(valet)" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Valet"><span class="pi pi-eye"></span></a>
-										<a class="btn btn-warning text-white" @click.prevent="editVale(valet)"  data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><span class="pi pi-pencil"></span></a>
+									<div class="d-flex">
+										<a class="btn btn-info text-white me-2" @click.prevent="verValet(valet)" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Valet"><span class="pi pi-eye"></span></a>
+										<a class="btn btn-warning text-white me-2" @click.prevent="editVale(valet)"  data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><span class="pi pi-pencil"></span></a>
 										<!-- <a class="btn btn-danger" @click.prevent="eliminarVale(valet)"  data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><span class="pi pi-trash"></span></a> -->
 										<a class="btn btn-dark" :href="'/reportes/'+valet.id" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir"><span class="pi pi-print"></span></a>
 									</div>
@@ -160,6 +164,7 @@
 					nombre:'',
 					proveedor_id: ''
 				},
+				proveedorId:null,
 				formItem:{
 					index:'',
 					vale_id: '',
@@ -174,12 +179,20 @@
 				modal: null,
 				errors:{},
 				buton_edit: false,
-				search: '',
+			}
+		},
+		watch: {
+			proveedorId(proveedor_id, oldValue) {
+				this.getValets(proveedor_id);
 			}
 		},
 		methods:{
 			getValets(){
-				axios.get('/api/apivalets')
+				axios.get(
+					'/api/apivalets',
+					{
+						params: {proveedor_id: this.proveedorId}
+					})
 				.then(response => {
 					this.valets = response.data;
 				})
@@ -385,12 +398,5 @@
 				return Array.isArray(error) ? error[0] : error;
 			},
 		},
-		computed: {
-			filteredProveedores() {
-				return this.proveedores.filter(proveedor =>
-					proveedor.nombre.toLowerCase().includes(this.search.toLowerCase())
-					);
-			}
-		}
 	}
 </script>

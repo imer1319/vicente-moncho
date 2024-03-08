@@ -26,14 +26,16 @@
 								<td> {{ proveedor.email }} </td>
 								<td> {{ proveedor.dni }} </td>
 								<td>
-									<a class="btn btn-sm btn-warning" @click.prevent="editProveedor(proveedor)">Editar</a>
-									<a class="btn btn-sm btn-danger" @click.prevent="eliminarProveedor(proveedor)">Eliminar</a>
+									<div class="d-flex">
+										<a class="btn btn-warning text-white me-2" @click.prevent="editProveedor(proveedor)"><span class="pi pi-pencil"></span></a>
+										<a class="btn btn-danger" @click.prevent="eliminarProveedor(proveedor)"><span class="pi pi-trash"></span></a>
+									</div>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-				<modal-component size="modal-md" id_modal="modal" :titulo="titulo" @guardar="updateOrCreate()" @cerrarModal="cerrarModal()">
+				<modal-component size="modal-md" :show_action="true"  id_modal="modal" :titulo="titulo" @guardar="updateOrCreate()" @cerrarModal="cerrarModal()">
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label for="nombre">Nombre *</label>
