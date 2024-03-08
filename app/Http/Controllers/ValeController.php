@@ -33,6 +33,7 @@ class ValeController extends Controller
      ->when($request->has('proveedor_id'), function ($query) use ($request) {
         return $query->where('proveedor_id', $request->proveedor_id);
     })
+     ->orderBy('created_at','DESC')
      ->get()
      ->map(function ($valet) {
         return [
